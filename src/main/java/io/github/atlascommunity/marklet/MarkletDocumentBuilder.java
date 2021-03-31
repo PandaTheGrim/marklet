@@ -1,6 +1,7 @@
 package io.github.atlascommunity.marklet;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -48,16 +49,16 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
   /** Target source package from which document will be written. * */
   private final PackageDoc source;
 
-  private final String extension;
+  private final MarkletOptions options;
 
   /**
    * Default constructor.
    *
    * @param source Target source package from which document will be written.
    */
-  public MarkletDocumentBuilder(final PackageDoc source, final String extension) {
+  public MarkletDocumentBuilder(final PackageDoc source, final MarkletOptions options) {
     this.source = source;
-    this.extension = extension;
+    this.options = options;
   }
 
   /**
@@ -81,7 +82,10 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (target.isIncluded()) {
       final String path = getPath(source.name(), target.containingPackage().name());
-      String urlBuilder = path + target.simpleTypeName() + "." + extension;
+      String urlBuilder = path + target.simpleTypeName() + "." + options.getFileEnding();
+      if (options.isOverwriteProjectReadme()) {
+        urlBuilder = options.getOutputDirectory() + File.separator + urlBuilder;
+      }
       link(target.simpleTypeName(), urlBuilder);
     } else {
       // TODO : Process external link here.

@@ -27,11 +27,11 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
    * Default constructor.
    *
    * @param packageDoc Target package that page is built from.
-   * @param extension Files extension for generated documents
+   * @param options doclet options
    */
-  private PackagePageBuilder(final PackageDoc packageDoc, final String extension) {
+  private PackagePageBuilder(final PackageDoc packageDoc, final MarkletOptions options) {
 
-    super(packageDoc, extension);
+    super(packageDoc, options);
     this.packageDoc = packageDoc;
   }
 
@@ -111,7 +111,7 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
       throws IOException {
 
     final PackagePageBuilder packageBuilder =
-        new PackagePageBuilder(packageDoc, options.getFileEnding());
+        new PackagePageBuilder(packageDoc, options);
     packageBuilder.header();
     packageBuilder.indexes();
 

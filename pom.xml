@@ -87,6 +87,8 @@
                             <additionalOptions>
                                 <additionalOption>-d</additionalOption>
                                 <additionalOption>doc</additionalOption>
+                                <additionalOption>-o</additionalOption>
+                                <additionalOption>true</additionalOption>
                             </additionalOptions>
                             <useStandardDocletOptions>false</useStandardDocletOptions>
                         </configuration>
