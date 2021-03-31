@@ -1,7 +1,7 @@
 package io.github.atlascommunity.marklet;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -115,16 +115,12 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
     packageBuilder.header();
     packageBuilder.indexes();
 
-    // if we need to store Readme.md separate
-    Path readmePathFromOption = Paths.get(options.getReadmeDirectory());
-    Path readmePath;
-    if (readmePathFromOption.compareTo(directoryPath) == 0) {
-      readmePath = directoryPath.resolve(Constants.README_FILE);
+    // if we need to override main project README.md file
+    if (options.isOverwriteProjectReadme()) {
+      packageBuilder.build(
+          Paths.get(new File("").getAbsolutePath(), Constants.README_FILE), options);
     } else {
-      Files.createDirectories(readmePathFromOption);
-      readmePath = readmePathFromOption.resolve(Constants.README_FILE);
+      packageBuilder.build(directoryPath.resolve(Constants.README_FILE), options);
     }
-
-    packageBuilder.build(readmePath, options);
   }
 }

@@ -142,8 +142,7 @@ public final class Marklet {
       final String packageName = packageDoc.name();
       final Path packageDirectory = getPackageDirectory(packageName);
       root.printNotice("Generates documentation for " + classDoc.name());
-      ClassPageBuilder.build(
-          classDoc, packageDirectory, options);
+      ClassPageBuilder.build(classDoc, packageDirectory, options);
     }
   }
 

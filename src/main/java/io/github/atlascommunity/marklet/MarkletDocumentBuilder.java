@@ -81,7 +81,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (target.isIncluded()) {
       final String path = getPath(source.name(), target.containingPackage().name());
-      String urlBuilder = path + target.simpleTypeName() + extension;
+      String urlBuilder = path + target.simpleTypeName() + "." + extension;
       link(target.simpleTypeName(), urlBuilder);
     } else {
       // TODO : Process external link here.
