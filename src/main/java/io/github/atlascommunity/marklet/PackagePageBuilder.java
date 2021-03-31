@@ -27,10 +27,11 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
    * Default constructor.
    *
    * @param packageDoc Target package that page is built from.
+   * @param extension Files extension for generated documents
    */
-  private PackagePageBuilder(final PackageDoc packageDoc) {
+  private PackagePageBuilder(final PackageDoc packageDoc, final String extension) {
 
-    super(packageDoc);
+    super(packageDoc, extension);
     this.packageDoc = packageDoc;
   }
 
@@ -41,7 +42,7 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
   private void header() {
 
     header(1);
-    text(MarkletConstant.PACKAGE);
+    text(Constants.PACKAGE);
     character(' ');
     text(packageDoc.name());
     newLine();
@@ -63,7 +64,7 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
       header(2);
       text(label);
       newLine();
-      tableHeader(MarkletConstant.NAME, "Description");
+      tableHeader(Constants.NAME, "Description");
       Arrays.stream(classDocs).forEach(this::classRow);
       newLine();
     }
@@ -91,10 +92,10 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
    */
   private void indexes() {
 
-    classIndex(MarkletConstant.ANNOTATIONS, packageDoc::annotationTypes);
-    classIndex(MarkletConstant.ENUMERATIONS, packageDoc::enums);
-    classIndex(MarkletConstant.INTERFACES, packageDoc::interfaces);
-    classIndex(MarkletConstant.CLASSES, packageDoc::allClasses);
+    classIndex(Constants.ANNOTATIONS, packageDoc::annotationTypes);
+    classIndex(Constants.ENUMERATIONS, packageDoc::enums);
+    classIndex(Constants.INTERFACES, packageDoc::interfaces);
+    classIndex(Constants.CLASSES, packageDoc::allClasses);
   }
 
   /**
@@ -109,7 +110,8 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
       final PackageDoc packageDoc, final Path directoryPath, final MarkletOptions options)
       throws IOException {
 
-    final PackagePageBuilder packageBuilder = new PackagePageBuilder(packageDoc);
+    final PackagePageBuilder packageBuilder =
+        new PackagePageBuilder(packageDoc, options.getFileEnding());
     packageBuilder.header();
     packageBuilder.indexes();
 
@@ -117,10 +119,10 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
     Path readmePathFromOption = Paths.get(options.getReadmeDirectory());
     Path readmePath;
     if (readmePathFromOption.compareTo(directoryPath) == 0) {
-      readmePath = directoryPath.resolve(MarkletConstant.README_FILE);
+      readmePath = directoryPath.resolve(Constants.README_FILE);
     } else {
       Files.createDirectories(readmePathFromOption);
-      readmePath = readmePathFromOption.resolve(MarkletConstant.README_FILE);
+      readmePath = readmePathFromOption.resolve(Constants.README_FILE);
     }
 
     packageBuilder.build(readmePath, options);

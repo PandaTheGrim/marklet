@@ -39,10 +39,11 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
    * Default constructor.
    *
    * @param classDoc Target class that page is built from.
+   * @param extension Files extension for generated documents
    */
-  private ClassPageBuilder(final ClassDoc classDoc) {
+  private ClassPageBuilder(final ClassDoc classDoc, final String extension) {
 
-    super(classDoc.containingPackage());
+    super(classDoc.containingPackage(), extension);
     this.classDoc = classDoc;
   }
 
@@ -118,7 +119,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     }
 
     if (!implementedInterfaces.isEmpty()) {
-      text(MarkletConstant.INTERFACE_HIEARCHY_HEADER);
+      text(Constants.INTERFACE_HIEARCHY_HEADER);
       newLine();
       item();
       final int limit = implementedInterfaces.size() - 1;
@@ -144,13 +145,13 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     header(1);
     final StringBuilder builder = new StringBuilder();
     if (classDoc.isInterface()) {
-      builder.append(MarkletConstant.INTERFACE);
+      builder.append(Constants.INTERFACE);
     } else if (classDoc.isEnum()) {
-      builder.append(MarkletConstant.ENUMERATION);
+      builder.append(Constants.ENUMERATION);
     } else if (classDoc.isAnnotationType()) {
-      builder.append(MarkletConstant.ANNOTATION);
+      builder.append(Constants.ANNOTATION);
     } else {
-      builder.append(MarkletConstant.CLASS);
+      builder.append(Constants.CLASS);
     }
     builder.append(' ').append(classDoc.name());
     text(builder.toString());
@@ -169,9 +170,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     final PackageDoc packageDoc = classDoc.containingPackage();
     final String packageName = packageDoc.name();
     item();
-    text(MarkletConstant.PACKAGE);
+    text(Constants.PACKAGE);
     character(' ');
-    link(packageName, MarkletConstant.README_LINK);
+    link(packageName, Constants.README_LINK);
     newLine();
     item();
     classHierarchy();
@@ -200,9 +201,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasMethod()) {
       header(4);
-      text(MarkletConstant.METHODS);
+      text(Constants.METHODS);
       newLine();
-      tableHeader(MarkletConstant.METHODS_SUMMARY_HEADERS);
+      tableHeader(Constants.METHODS_SUMMARY_HEADERS);
       getOrderedElements(classDoc::methods)
           .filter(this::isNotInherited)
           .forEach(this::rowSignature);
@@ -232,9 +233,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasField()) {
       header(4);
-      text(MarkletConstant.FIELDS);
+      text(Constants.FIELDS);
       newLine();
-      tableHeader(MarkletConstant.FIELDS_SUMMARY_HEADERS);
+      tableHeader(Constants.FIELDS_SUMMARY_HEADERS);
       getOrderedElements(classDoc::fields).filter(FieldDoc::isStatic).forEach(this::rowSignature);
       getOrderedElements(classDoc::fields)
           .filter(field -> !field.isStatic())
@@ -248,9 +249,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasConstructor()) {
       header(4);
-      text(MarkletConstant.CONSTRUCTORS);
+      text(Constants.CONSTRUCTORS);
       newLine();
-      tableHeader(MarkletConstant.CONSTRUCTOR_SUMMARY_HEADERS);
+      tableHeader(Constants.CONSTRUCTOR_SUMMARY_HEADERS);
       getOrderedElements(classDoc::constructors).forEach(this::rowSignature);
       newLine();
     }
@@ -265,7 +266,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasField() || hasMethod() || hasConstructor()) {
       newLine();
       header(2);
-      text(MarkletConstant.SUMMARY);
+      text(Constants.SUMMARY);
       newLine();
       fieldsSummary();
       constructorsSummary();
@@ -280,7 +281,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasConstructor()) {
       newLine();
       header(1);
-      text(MarkletConstant.CONSTRUCTORS);
+      text(Constants.CONSTRUCTORS);
       newLine();
       getOrderedElements(classDoc::constructors).forEach(this::member);
     }
@@ -292,7 +293,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasField()) {
       newLine();
       header(1);
-      text(MarkletConstant.FIELDS);
+      text(Constants.FIELDS);
       newLine();
       getOrderedElements(classDoc::fields).filter(field -> !field.isStatic()).forEach(this::field);
       getOrderedElements(classDoc::fields).filter(FieldDoc::isStatic).forEach(this::field);
@@ -305,7 +306,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasMethod()) {
       newLine();
       header(1);
-      text(MarkletConstant.METHODS);
+      text(Constants.METHODS);
       newLine();
       getOrderedElements(classDoc::methods).filter(this::isNotInherited).forEach(this::member);
     }
@@ -325,7 +326,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
       throws IOException {
 
     final Path classPath = Paths.get(classDoc.simpleTypeName() + "." + options.getFileEnding());
-    final ClassPageBuilder builder = new ClassPageBuilder(classDoc);
+    final ClassPageBuilder builder = new ClassPageBuilder(classDoc, options.getFileEnding());
     builder.header();
     builder.summary();
     builder.constructors();

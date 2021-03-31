@@ -1,11 +1,14 @@
 package io.github.atlascommunity.marklet;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Enumerations of text constant used during documentation generation.
  *
  * @author fv
  */
-public final class MarkletConstant {
+@UtilityClass
+public final class Constants {
 
   /** Label for package. * */
   public static final String PACKAGE = "Package";
@@ -81,9 +84,4 @@ public final class MarkletConstant {
 
   /** Header label for the interface hierachy. * */
   public static final String INTERFACE_HIEARCHY_HEADER = "All implemented interfaces :";
-
-  /** Private constructor for avoiding instantiation. */
-  private MarkletConstant() {
-    // Do nothing.
-  }
 }

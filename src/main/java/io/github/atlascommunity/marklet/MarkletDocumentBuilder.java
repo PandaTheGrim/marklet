@@ -48,13 +48,16 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
   /** Target source package from which document will be written. * */
   private final PackageDoc source;
 
+  private final String extension;
+
   /**
    * Default constructor.
    *
    * @param source Target source package from which document will be written.
    */
-  public MarkletDocumentBuilder(final PackageDoc source) {
+  public MarkletDocumentBuilder(final PackageDoc source, final String extension) {
     this.source = source;
+    this.extension = extension;
   }
 
   /**
@@ -75,9 +78,10 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
    * @param target Target class to reach from this package.
    */
   public void classLink(final PackageDoc source, final ClassDoc target) {
+
     if (target.isIncluded()) {
       final String path = getPath(source.name(), target.containingPackage().name());
-      String urlBuilder = path + target.simpleTypeName() + MarkdownDocumentBuilder.LINK_EXTENSION;
+      String urlBuilder = path + target.simpleTypeName() + extension;
       link(target.simpleTypeName(), urlBuilder);
     } else {
       // TODO : Process external link here.
@@ -368,7 +372,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (parameters.length > 0) {
       header(3);
-      bold(MarkletConstant.PARAMETERS);
+      bold(Constants.PARAMETERS);
       newLine();
       for (final ParamTag parameter : parameters) {
         item();
@@ -395,7 +399,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (tag.length > 0) {
       header(3);
-      bold(MarkletConstant.RETURNS);
+      bold(Constants.RETURNS);
       newLine();
       description(tag[0].inlineTags());
       newLine();
@@ -413,7 +417,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (exceptions.length > 0) {
       header(3);
-      bold(MarkletConstant.THROWS);
+      bold(Constants.THROWS);
       newLine();
       for (final ThrowsTag exception : exceptions) {
         item();
@@ -437,7 +441,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
   public void build(final Path path, MarkletOptions options) throws IOException {
 
     newLine();
-    if (options.isBadgeNeeded()) text(MarkletConstant.BADGE);
+    if (options.isBadgeNeeded()) text(Constants.BADGE);
     final String content = super.build();
     final InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
     Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
