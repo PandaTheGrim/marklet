@@ -29,6 +29,9 @@ import com.sun.javadoc.Type;
 import com.sun.javadoc.TypeVariable;
 import com.sun.javadoc.WildcardType;
 
+import io.github.atlascommunity.marklet.constants.Labels;
+import io.github.atlascommunity.marklet.constants.Links;
+
 /**
  * Custom {@link MarkdownDocumentBuilder} implementation that aims to be used for building Marklet
  * generated document. Such document are defined by a source package from which link are built.
@@ -87,10 +90,6 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
         urlBuilder = options.getOutputDirectory() + File.separator + urlBuilder;
       }
       link(target.simpleTypeName(), urlBuilder);
-    } else {
-      // TODO : Process external link here.
-      // TODO : Use marklet-directory project when done.
-      italic(target.qualifiedName());
     }
   }
 
@@ -376,7 +375,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (parameters.length > 0) {
       header(3);
-      bold(Constants.PARAMETERS);
+      bold(Labels.PARAMETERS);
       newLine();
       for (final ParamTag parameter : parameters) {
         item();
@@ -403,7 +402,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (tag.length > 0) {
       header(3);
-      bold(Constants.RETURNS);
+      bold(Labels.RETURNS);
       newLine();
       description(tag[0].inlineTags());
       newLine();
@@ -421,7 +420,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
 
     if (exceptions.length > 0) {
       header(3);
-      bold(Constants.THROWS);
+      bold(Labels.THROWS);
       newLine();
       for (final ThrowsTag exception : exceptions) {
         item();
@@ -445,7 +444,7 @@ public class MarkletDocumentBuilder extends MarkdownDocumentBuilder {
   public void build(final Path path, MarkletOptions options) throws IOException {
 
     newLine();
-    if (options.isBadgeNeeded()) text(Constants.BADGE);
+    if (options.isBadgeNeeded()) text(Links.BADGE);
     final String content = super.build();
     final InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
     Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);

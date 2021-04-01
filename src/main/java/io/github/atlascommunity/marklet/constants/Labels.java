@@ -1,14 +1,14 @@
-package io.github.atlascommunity.marklet;
+package io.github.atlascommunity.marklet.constants;
 
 import lombok.experimental.UtilityClass;
 
 /**
- * Enumerations of text constant used during documentation generation.
+ * Labels used during documentation generation.
  *
  * @author fv
  */
 @UtilityClass
-public final class Constants {
+public final class Labels {
 
   /** Label for package. * */
   public static final String PACKAGE = "Package";
@@ -46,12 +46,6 @@ public final class Constants {
   /** Label for fields. * */
   public static final String FIELDS = "Fields";
 
-  /** Package index filename. * */
-  public static final String README_LINK = "README.html";
-
-  /** Package index filename. * */
-  public static final String README_FILE = "README.md";
-
   /** Label for name. * */
   public static final String NAME = "Name";
 
@@ -68,20 +62,14 @@ public final class Constants {
   public static final String SUMMARY = "Summary";
 
   /** Header labels for methods summary. * */
-  protected static final String[] METHODS_SUMMARY_HEADERS = {
-    "Type and modifiers", "Method signature"
-  };
+  public static final String[] METHODS_SUMMARY_HEADERS = {"Type and modifiers", "Method signature"};
 
   /** Header labels for fields summary. * */
-  protected static final String[] FIELDS_SUMMARY_HEADERS = {"Type and modifiers", "Field name"};
+  public static final String[] FIELDS_SUMMARY_HEADERS = {"Type and modifiers", "Field name"};
 
   /** Header labels for constructors summary. * */
-  protected static final String[] CONSTRUCTOR_SUMMARY_HEADERS = {"Visibility", "Signature"};
-
-  /** Marklet link using dynamic badge. * */
-  public static final String BADGE =
-      "[![Marklet](https://img.shields.io/badge/Generated%20by-Marklet-green.svg)](https://github.com/Faylixe/marklet)";
+  public static final String[] CONSTRUCTOR_SUMMARY_HEADERS = {"Visibility", "Signature"};
 
   /** Header label for the interface hierachy. * */
-  public static final String INTERFACE_HIEARCHY_HEADER = "All implemented interfaces :";
+  public static final String INTERFACE_HIERARCHY_HEADER = "All implemented interfaces :";
 }

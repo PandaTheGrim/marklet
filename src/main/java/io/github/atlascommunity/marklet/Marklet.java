@@ -100,7 +100,7 @@ public final class Marklet {
    * @param packageDoc Package to generate documentation for.
    * @throws IOException If any error occurs while creating file or directories.
    */
-  private void generatePackage(final PackageDoc packageDoc) throws IOException {
+  private Path generatePackage(final PackageDoc packageDoc) throws IOException {
 
     final String name = packageDoc.name();
     root.printNotice("Generates package documentation for " + name);
@@ -110,7 +110,9 @@ public final class Marklet {
         Files.createDirectories(directoryPath);
       }
       PackagePageBuilder.build(packageDoc, directoryPath, options);
+      return directoryPath;
     }
+    return Paths.get(".");
   }
 
   /**
@@ -119,8 +121,8 @@ public final class Marklet {
    * @throws IOException If any error occurs during generation process.
    */
   private void buildPackages() throws IOException {
-
-    final Set<PackageDoc> packages = new HashSet<>();
+    // TODO : Consider method root.specifiedPackages();
+    final Set<PackageDoc> packages = new HashSet<>(); // TODO : Ensures
     for (final ClassDoc classDoc : root.classes()) {
       final PackageDoc packageDoc = classDoc.containingPackage();
       if (!packages.contains(packageDoc)) {

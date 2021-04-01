@@ -20,6 +20,9 @@ import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.PackageDoc;
 import com.sun.javadoc.Type;
 
+import io.github.atlascommunity.marklet.constants.Filenames;
+import io.github.atlascommunity.marklet.constants.Labels;
+
 /**
  * Builder that aims to create documentation page for a given ``class``. As for a standard class
  * javadoc generation, it will contains a class summary, followed by details about class field,
@@ -119,7 +122,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     }
 
     if (!implementedInterfaces.isEmpty()) {
-      text(Constants.INTERFACE_HIEARCHY_HEADER);
+      text(Labels.INTERFACE_HIERARCHY_HEADER);
       newLine();
       item();
       final int limit = implementedInterfaces.size() - 1;
@@ -145,13 +148,13 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     header(1);
     final StringBuilder builder = new StringBuilder();
     if (classDoc.isInterface()) {
-      builder.append(Constants.INTERFACE);
+      builder.append(Labels.INTERFACE);
     } else if (classDoc.isEnum()) {
-      builder.append(Constants.ENUMERATION);
+      builder.append(Labels.ENUMERATION);
     } else if (classDoc.isAnnotationType()) {
-      builder.append(Constants.ANNOTATION);
+      builder.append(Labels.ANNOTATION);
     } else {
-      builder.append(Constants.CLASS);
+      builder.append(Labels.CLASS);
     }
     builder.append(' ').append(classDoc.name());
     text(builder.toString());
@@ -170,9 +173,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     final PackageDoc packageDoc = classDoc.containingPackage();
     final String packageName = packageDoc.name();
     item();
-    text(Constants.PACKAGE);
+    text(Labels.PACKAGE);
     character(' ');
-    link(packageName, Constants.README_LINK);
+    link(packageName, Filenames.README_LINK);
     newLine();
     item();
     classHierarchy();
@@ -201,9 +204,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasMethod()) {
       header(4);
-      text(Constants.METHODS);
+      text(Labels.METHODS);
       newLine();
-      tableHeader(Constants.METHODS_SUMMARY_HEADERS);
+      tableHeader(Labels.METHODS_SUMMARY_HEADERS);
       getOrderedElements(classDoc::methods)
           .filter(this::isNotInherited)
           .forEach(this::rowSignature);
@@ -233,9 +236,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasField()) {
       header(4);
-      text(Constants.FIELDS);
+      text(Labels.FIELDS);
       newLine();
-      tableHeader(Constants.FIELDS_SUMMARY_HEADERS);
+      tableHeader(Labels.FIELDS_SUMMARY_HEADERS);
       getOrderedElements(classDoc::fields).filter(FieldDoc::isStatic).forEach(this::rowSignature);
       getOrderedElements(classDoc::fields)
           .filter(field -> !field.isStatic())
@@ -249,9 +252,9 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
 
     if (hasConstructor()) {
       header(4);
-      text(Constants.CONSTRUCTORS);
+      text(Labels.CONSTRUCTORS);
       newLine();
-      tableHeader(Constants.CONSTRUCTOR_SUMMARY_HEADERS);
+      tableHeader(Labels.CONSTRUCTOR_SUMMARY_HEADERS);
       getOrderedElements(classDoc::constructors).forEach(this::rowSignature);
       newLine();
     }
@@ -266,7 +269,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasField() || hasMethod() || hasConstructor()) {
       newLine();
       header(2);
-      text(Constants.SUMMARY);
+      text(Labels.SUMMARY);
       newLine();
       fieldsSummary();
       constructorsSummary();
@@ -281,7 +284,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasConstructor()) {
       newLine();
       header(1);
-      text(Constants.CONSTRUCTORS);
+      text(Labels.CONSTRUCTORS);
       newLine();
       getOrderedElements(classDoc::constructors).forEach(this::member);
     }
@@ -293,7 +296,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasField()) {
       newLine();
       header(1);
-      text(Constants.FIELDS);
+      text(Labels.FIELDS);
       newLine();
       getOrderedElements(classDoc::fields).filter(field -> !field.isStatic()).forEach(this::field);
       getOrderedElements(classDoc::fields).filter(FieldDoc::isStatic).forEach(this::field);
@@ -306,7 +309,7 @@ public final class ClassPageBuilder extends MarkletDocumentBuilder {
     if (hasMethod()) {
       newLine();
       header(1);
-      text(Constants.METHODS);
+      text(Labels.METHODS);
       newLine();
       getOrderedElements(classDoc::methods).filter(this::isNotInherited).forEach(this::member);
     }

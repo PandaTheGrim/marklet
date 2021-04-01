@@ -10,6 +10,9 @@ import java.util.function.Supplier;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.PackageDoc;
 
+import io.github.atlascommunity.marklet.constants.Filenames;
+import io.github.atlascommunity.marklet.constants.Labels;
+
 /**
  * Builder that aims to create documentation page for a given ``package``. Such documentation
  * consists in a package description followed by type listing over following categories :
@@ -42,7 +45,7 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
   private void header() {
 
     header(1);
-    text(Constants.PACKAGE);
+    text(Labels.PACKAGE);
     character(' ');
     text(packageDoc.name());
     newLine();
@@ -64,7 +67,7 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
       header(2);
       text(label);
       newLine();
-      tableHeader(Constants.NAME, "Description");
+      tableHeader(Labels.NAME, "Description");
       Arrays.stream(classDocs).forEach(this::classRow);
       newLine();
     }
@@ -92,10 +95,10 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
    */
   private void indexes() {
 
-    classIndex(Constants.ANNOTATIONS, packageDoc::annotationTypes);
-    classIndex(Constants.ENUMERATIONS, packageDoc::enums);
-    classIndex(Constants.INTERFACES, packageDoc::interfaces);
-    classIndex(Constants.CLASSES, packageDoc::allClasses);
+    classIndex(Labels.ANNOTATIONS, packageDoc::annotationTypes);
+    classIndex(Labels.ENUMERATIONS, packageDoc::enums);
+    classIndex(Labels.INTERFACES, packageDoc::interfaces);
+    classIndex(Labels.CLASSES, packageDoc::allClasses);
   }
 
   /**
@@ -110,17 +113,16 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
       final PackageDoc packageDoc, final Path directoryPath, final MarkletOptions options)
       throws IOException {
 
-    final PackagePageBuilder packageBuilder =
-        new PackagePageBuilder(packageDoc, options);
+    final PackagePageBuilder packageBuilder = new PackagePageBuilder(packageDoc, options);
     packageBuilder.header();
     packageBuilder.indexes();
 
     // if we need to override main project README.md file
     if (options.isOverwriteProjectReadme()) {
       packageBuilder.build(
-          Paths.get(new File("").getAbsolutePath(), Constants.README_FILE), options);
+          Paths.get(new File("").getAbsolutePath(), Filenames.README_FILE), options);
     } else {
-      packageBuilder.build(directoryPath.resolve(Constants.README_FILE), options);
+      packageBuilder.build(directoryPath.resolve(Filenames.README_FILE), options);
     }
   }
 }
