@@ -119,8 +119,8 @@ public final class PackagePageBuilder extends MarkletDocumentBuilder {
 
     // if we need to override main project README.md file
     if (options.isOverwriteProjectReadme()) {
-      packageBuilder.build(
-          Paths.get(new File("").getAbsolutePath(), Filenames.README_FILE), options);
+      String root = new File("").getAbsolutePath();
+      packageBuilder.build(Paths.get(root, Filenames.README_FILE), options);
     } else {
       packageBuilder.build(directoryPath.resolve(Filenames.README_FILE), options);
     }
